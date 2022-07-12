@@ -1,5 +1,5 @@
 <?php
-//namespace Autentication;
+namespace Autentication;
 
 class Authentication{
 	static $loginPage = './login.php';
