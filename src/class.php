@@ -87,13 +87,13 @@ class Authentication{
 	public function autologin(){
 		// Eseguo la procedura di login prendendo i dati dai cookies
 		if(isset($_COOKIE['rememberMe'])){
-			$base64 = base64_decode($_COOKIE['rememberMe']);
-			if(isset($base64)){
-				$userData = json_decode($base64);
+			$json = base64_decode($_COOKIE['rememberMe']);
+			if(isset($json)){
+				$userData = json_decode($json);
 				if(isset($userData)){
-					$username = $userData['username'];
-					$password = $userData['password'];
-				
+					$username = $userData->username;
+					$password = $userData->password;
+
 					// Setto il remember me a true per rinnorave i cookies
 					$this->login($username,$password, true, Authentication::$defaultPage);
 				}
