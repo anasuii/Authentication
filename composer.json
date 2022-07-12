@@ -1,0 +1,16 @@
+{
+    "name": "anasuii/authentication",
+    "description": "Auth class in php",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name":"anasuii",
+        "email": "alexandrudaniel.nasui@gmail.com"
+    }],
+    "autoload": {
+        "psr-4": {
+            "Authentication\\":"src/"
+        }
+    },
+    "require": {}
+}
