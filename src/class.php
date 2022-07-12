@@ -63,14 +63,11 @@ class Authentication{
 
 	static function redirect($target, $queryParams = null){
 		if(isset($target)){
-				if(!isset($_GET['recursion'])){
-					$target.='?recursion=false';
-					if(isset($queryParams)){
-						$target.=$queryParams;
-					}
+			if(isset($queryParams)){
+				$target.='?'.$queryParams;
+			}
 
-					header('location: '.$target);
-				}
+			header('location: '.$target);
 		}
 	}
 
