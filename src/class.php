@@ -40,9 +40,12 @@ class Authentication{
 				}else{
 					// Salvo i cookies per l'auto login
 					if($rememberMe === true){
-						$timeout = time() + Authentication::$cookiesTimeout;
-						setcookie('username', $username, $timeout, '/');
-						setcookie('password', $password, $timeout , '/');
+						$cookie = array(
+							'username' => $username,
+							'password' => $password,
+						);
+
+						setcookie('rememberMe', base64_encode(json_encode($cookie)), time() + Authentication::$cookiesTimeout, '/');
 					}
 					
 					// Avvio della sessione
@@ -83,9 +86,18 @@ class Authentication{
 
 	public function autologin(){
 		// Eseguo la procedura di login prendendo i dati dai cookies
-		if(isset($_COOKIE['username']) && isset($_COOKIE['password'])){
-			// Setto il remember me a true per rinnorave i cookies
-			$this->login($_COOKIE['username'],$_COOKIE['password'], true, Authentication::$defaultPage);
+		if(isset($_COOKIE['rememberMe'])){
+			$base64 = base64_decode($_COOKIE['rememberMe']);
+			if(isset($base64)){
+				$userData = json_decode($base64);
+				if(isset($userData)){
+					$username = $userData['username'];
+					$password = $userData['password'];
+				
+					// Setto il remember me a true per rinnorave i cookies
+					$this->login($username,$password, true, Authentication::$defaultPage);
+				}
+			}
 		}
 	}
 
@@ -94,9 +106,7 @@ class Authentication{
 	static function logout($queryParams = null){
 		if(isset($_COOKIE)){
 			// Pulizia dei cookies
-			$timeout = time() - 36000;
-			setcookie('username', '', $timeout ,'/');
-			setcookie('password', '', $timeout, '/');
+			setcookie('rememberMe', '', time() - 36000, '/');
 		}
 		
 		// Riprendo la sessione in corso
